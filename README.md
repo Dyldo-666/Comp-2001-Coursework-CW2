@@ -1,7 +1,20 @@
 # COMP2001 CW2 - ProfileService
 
-GitHub Username: <YOUR_GITHUB_USERNAME>  
-Docker Image: <DOCKER_USERNAME>/<IMAGE_NAME>:latest
+## Github Repository
+https://github.com/Dyldo-666/Comp-2001-Coursework-CW2
+
+## Docker Image
+Docker Hub image:
+dylbo666/profileservice-cw2:latest
+
+To run:
+docker pull dylbo666/profileservice-cw2:latest
+docker run -p 8000:8000 \
+  -e DB_SERVER=dist-6-505.uopnet.plymouth.ac.uk,1433 \
+  -e DB_DATABASE=COMP2001_DMoore \
+  -e DB_USERNAME=*** \
+  -e DB_PASSWORD=*** \
+  dylbo666/profileservice-cw2:latest
 
 ## Overview
 This repository contains the ProfileService microservice for the Trail Application scenario (COMP2001).
@@ -15,19 +28,3 @@ Passwords are not stored. Authentication is handled by the provided Authenticato
 - Docker (containerised deployment)
 - Swagger UI at `/docs`
 
-## Environment Variables
-Set these when running locally or in Docker:
-
-- DB_SERVER=dist-6-505.uopnet.plymouth.ac.uk
-- DB_DATABASE=<your_db_name>
-- DB_USERNAME=<your_username>
-- DB_PASSWORD=<your_password>
-
-Optional:
-- CORS_ORIGINS=*
-- AUTH_TIMEOUT=10
-
-## Run locally
-```bash
-pip install -r requirements.txt
-uvicorn app.main:app --reload
