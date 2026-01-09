@@ -14,11 +14,17 @@ def read_profile_summary(username: str) -> Optional[Dict[str, Any]]:
         columns = [d[0] for d in cur.description]
         return _row_to_dict(columns, row)
 
-def list_profiles(limit: int = 50) -> List[Dict[str, Any]]:
-    # For listing, query the view directly (safe; no user input used in SQL text)
+def list_profiles(limit: int = 50):
+    sql = f"""
+        SELECT TOP {limit}
+        *
+        FROM CW2.vUserProfileSummary
+        ORDER BY CreatedAtUtc DESC
+    """
+
     with get_conn() as conn:
         cur = conn.cursor()
-        cur.execute("SELECT TOP (?) * FROM CW2.vUserProfileSummary ORDER BY CreatedAtUtc DESC", limit)
+        cur.execute(sql)
         rows = cur.fetchall()
         columns = [d[0] for d in cur.description]
         return [_row_to_dict(columns, r) for r in rows]
@@ -72,5 +78,5 @@ def _fetch_success_message(cur) -> Dict[str, Any]:
         return {"success": False, "message": "No response from stored procedure"}
     columns = [d[0] for d in cur.description]
     result = {columns[i].lower(): row[i] for i in range(len(columns))}
-    # Expected: success + message
     return result
+
